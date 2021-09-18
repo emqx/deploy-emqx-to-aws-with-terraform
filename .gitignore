@@ -1,0 +1,19 @@
+# IDE
+.idea/
+.vscode
+.mypy_cache/
+
+# MacOS
+.DS_Store
+
+# Terraform
+.terraform
+terraform.tfstate
+.terraform.lock.hcl
+terraform.tfstate.backup
+
+# emqx package
+emqx.zip
+
+# pem
+*.pem
