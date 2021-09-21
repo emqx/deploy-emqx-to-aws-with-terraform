@@ -4,11 +4,6 @@ data "aws_vpc" "default" {
   default = true
 }
 
-data "aws_security_group" "default" {
-  vpc_id = data.aws_vpc.default.id
-  name   = "default"
-}
-
 #######################################
 ## emqx modules
 #######################################
@@ -38,6 +33,15 @@ module "emqx_security_group" {
   egress_with_cidr_blocks  = var.egress_with_cidr_blocks
 }
 
+# module "elb_security_group" {
+#   source = "../../modules/security_group"
+
+#   namespace                = var.elb_namespace
+#   vpc_id                   = data.aws_vpc.default.id
+#   ingress_with_cidr_blocks = var.elb_ingress_with_cidr_blocks
+#   egress_with_cidr_blocks  = var.egress_with_cidr_blocks
+# }
+
 module "emqx_cluster" {
   source = "../../modules/emqx_cluster"
 
@@ -55,8 +59,9 @@ module "elb" {
   source = "../../modules/elb"
 
   namespace                   = var.elb_namespace
-  instance_count              = var.emqx_instance_count
   subnet_ids                  = module.elb_networking.subnet_ids
-  sg_ids                      = [data.aws_security_group.default.id]
+  # sg_ids                      = [module.elb_security_group.sg_id]
+  forwarding_config = var.forwarding_config
+  vpc_id             = data.aws_vpc.default.id
   instance_ids = module.emqx_cluster.ids
 }

@@ -101,3 +101,22 @@ variable "emqx_instance_type" {
   type        = string
   default     = "t2.micro"
 }
+
+## nlb
+variable "forwarding_config" {
+  description = "forwarding config of nlb"
+  type        = map
+  default = {
+      1883        =   "TCP"
+      8883       =   "TCP"
+      8083       =   "TCP"
+      8084       =   "TCP"
+      18083       =   "TCP"
+  }
+}
+
+variable "elb_ingress_with_cidr_blocks" {
+  description = "ingress of elb with cidr blocks"
+  type        = list(any)
+  default     = [null]
+}

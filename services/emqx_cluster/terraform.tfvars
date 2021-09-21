@@ -73,6 +73,43 @@ egress_with_cidr_blocks = [
   }
 ]
 
+elb_ingress_with_cidr_blocks = [
+  {
+    description = "mqtt"
+    from_port   = 1883
+    to_port     = 1883
+    protocol    = "tcp"
+    cidr_blocks = "0.0.0.0/0"
+  },
+  {
+    description = "mqtts"
+    from_port   = 8883
+    to_port     = 8883
+    protocol    = "tcp"
+    cidr_blocks = "0.0.0.0/0"
+  },
+  {
+    description = "ws"
+    from_port   = 8083
+    to_port     = 8083
+    protocol    = "tcp"
+    cidr_blocks = "0.0.0.0/0"
+  },
+  {
+    description = "wss"
+    from_port   = 8084
+    to_port     = 8084
+    protocol    = "tcp"
+    cidr_blocks = "0.0.0.0/0"
+  },
+  {
+    description = "dashboard"
+    from_port   = 18083
+    to_port     = 18083
+    protocol    = "tcp"
+    cidr_blocks = "0.0.0.0/0"
+  }
+]
 ## ec2
 associate_public_ip_address = true
 emqx_instance_type          = "t2.micro"
