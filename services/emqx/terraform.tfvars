@@ -62,3 +62,4 @@ egress_with_cidr_blocks = [
 ## ec2
 associate_public_ip_address = true
 emqx_instance_type          = "t2.micro"
+emqx_package = "https://www.emqx.com/en/downloads/broker/4.3.8/emqx-ubuntu20.04-4.3.8-amd64.zip"

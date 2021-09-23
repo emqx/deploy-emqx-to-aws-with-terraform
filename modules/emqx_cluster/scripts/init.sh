@@ -71,10 +71,5 @@ sudo sed -i 's/listener.tcp.external.max_conn_rate = 1000/listener.tcp.external.
 sudo sed -i 's/sysmon.large_heap = 8MB/sysmon.large_heap = 64MB/g' $HOME/emqx/etc/sys_mon.conf
 sudo sed -i 's/node.name = emqx@127.0.0.1/node.name = emqx@${local_ip}/g' $HOME/emqx/etc/emqx.conf
 
-# create emqx license file
-sudo cat > $LIC<<EOF
-${emqx_lic}
-EOF
-
 # start emqx
 # sudo $HOME/emqx/bin/emqx start

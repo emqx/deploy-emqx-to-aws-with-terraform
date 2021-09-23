@@ -5,8 +5,8 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Name        = "tf-emqx-single"
-      Product     = "emqx-single"
+      Name        = "tf-emqx"
+      Product     = "emqx"
       Environment = "tf"
     }
   }

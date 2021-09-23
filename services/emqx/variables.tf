@@ -3,7 +3,8 @@
 variable "region" {
   description = "AWS region"
   type        = string
-  default     = "ap-southeast-1"
+  # default     = "ap-southeast-1"
+  default = "us-east-1"
 }
 
 variable "access_key" {
@@ -31,7 +32,7 @@ variable "subnet_cidr_blocks" {
   description = "subnets of vpc"
   type        = list(string)
   default = [
-    "172.31.101.0/24"
+    "172.31.201.0/24"
   ]
 }
 

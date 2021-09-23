@@ -14,6 +14,7 @@ module "emqx_networking" {
   source = "../../modules/networking"
 
   namespace          = var.emqx_namespace
+  region = var.region
   vpc_id             = aws_default_vpc.default.id
   subnet_cidr_blocks = var.subnet_cidr_blocks
 }

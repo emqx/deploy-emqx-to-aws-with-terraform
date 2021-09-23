@@ -12,6 +12,7 @@ module "emqx_networking" {
   source = "../../modules/networking"
 
   namespace          = var.emqx_namespace
+  region = var.region
   vpc_id             = data.aws_vpc.default.id
   subnet_cidr_blocks = slice(var.subnet_cidr_blocks, 0, var.emqx_instance_count)
 }
@@ -20,6 +21,7 @@ module "elb_networking" {
   source = "../../modules/networking"
 
   namespace          = var.elb_namespace
+  region = var.region
   vpc_id             = data.aws_vpc.default.id
   subnet_cidr_blocks = slice(var.subnet_cidr_blocks, var.emqx_instance_count, var.emqx_instance_count+1)
 }
@@ -52,7 +54,7 @@ module "emqx_cluster" {
   subnet_ids                  = module.emqx_networking.subnet_ids
   sg_ids                      = [module.emqx_security_group.sg_id]
   emqx_package                = var.emqx_package
-  emqx_lic                    = var.emqx_lic
+  # emqx_lic                    = var.emqx_lic
 }
 
 module "elb" {

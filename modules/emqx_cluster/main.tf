@@ -37,7 +37,7 @@ resource "local_file" "private_key" {
 }
 
 resource "aws_key_pair" "key_pair" {
-  key_name   = "tf-emqx-single-key"
+  key_name   = "tf-emqx-cluster-key"
   public_key = tls_private_key.key.public_key_openssh
 }
 
@@ -60,18 +60,20 @@ resource "aws_instance" "ec2" {
     private_key = tls_private_key.key.private_key_pem
   }
 
-  # scp emqx
-  provisioner "file" {
-    source      = var.emqx_package
-    destination = "/tmp/emqx.zip"
-  }
-
   # init system
   provisioner "file" {
-    content     = templatefile("${path.module}/scripts/init.sh", { emqx_lic = var.emqx_lic, local_ip = self.private_ip })
+    content     = templatefile("${path.module}/scripts/init.sh", { local_ip = self.private_ip })
     destination = "/tmp/init.sh"
   }
 
+  # download emqx
+  provisioner "remote-exec" {
+    inline = [
+      "curl -L --max-redirs -1 -o /tmp/emqx.zip ${var.emqx_package}"
+    ]
+  }
+
+  # init system
   provisioner "remote-exec" {
     inline = [
       "chmod +x /tmp/init.sh",
@@ -83,7 +85,6 @@ resource "aws_instance" "ec2" {
   provisioner "remote-exec" {
     inline = [
       "sudo /home/ubuntu/emqx/bin/emqx start"
-      # "sudo curl -k https://13.251.133.132/xmeter_tools/script.sh | sh"
     ]
   }
 

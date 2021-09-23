@@ -16,4 +16,4 @@ terraform.tfstate.backup
 emqx.zip
 
 # pem
-*.pem
+*.pe
