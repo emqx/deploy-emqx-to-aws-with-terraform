@@ -84,5 +84,5 @@ variable "emqx_lic" {
 variable "emqx_instance_type" {
   description = "Instance type of emqx"
   type        = string
-  default     = "t2.micro"
+  default     = "t3.small"
 }
