@@ -3,7 +3,7 @@
 > Please refer to [terraform install doc](https://learn.hashicorp.com/tutorials/terraform/install-cli)
 
 
-## Alicloud AccessKey Pair
+## AWS AccessKey Pair
 ```bash
 export AWS_ACCESS_KEY_ID="anaccesskey"
 export AWS_SECRET_ACCESS_KEY="asecretkey"
