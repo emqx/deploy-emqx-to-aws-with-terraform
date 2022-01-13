@@ -62,7 +62,7 @@ resource "aws_instance" "ec2" {
 
   # init system
   provisioner "file" {
-    content     = templatefile("${path.module}/scripts/init.sh", { local_ip = self.private_ip })
+    content     = templatefile("${path.module}/scripts/init.sh", { local_ip = self.private_ip, ee_lic = var.ee_lic })
     destination = "/tmp/init.sh"
   }
 
@@ -96,7 +96,7 @@ resource "aws_instance" "ec2" {
   }
 
   tags = {
-    Name = "${var.namespace}"
+    Name = "${var.namespace}-ec2"
   }
 }
 

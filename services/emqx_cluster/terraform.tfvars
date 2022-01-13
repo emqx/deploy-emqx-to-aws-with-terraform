@@ -112,4 +112,4 @@ elb_ingress_with_cidr_blocks = [
 ]
 ## ec2
 associate_public_ip_address = true
-emqx_package = "https://www.emqx.com/en/downloads/broker/4.3.8/emqx-ubuntu20.04-4.3.8-amd64.zip"
+emqx_package                = "https://www.emqx.com/en/downloads/enterprise/4.4.0/emqx-ee-4.4.0-otp24.1.5-3-ubuntu20.04-amd64.zip"
