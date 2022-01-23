@@ -28,6 +28,6 @@ resource "aws_route_table" "rt" {
 resource "aws_route_table_association" "rt_asso" {
   for_each = aws_subnet.sn
 
-  subnet_id = each.value.id
+  subnet_id      = each.value.id
   route_table_id = aws_route_table.rt.id
 }

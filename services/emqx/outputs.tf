@@ -1,6 +1,6 @@
 output "emqx_address" {
   description = "public ip of ec2 for each project"
-  value = module.emqx.public_ip
+  value       = module.emqx.public_ip
 }
 
 # output "emqx_private_ip" {

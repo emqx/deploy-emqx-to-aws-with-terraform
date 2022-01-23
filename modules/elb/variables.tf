@@ -2,12 +2,16 @@ variable "namespace" {
   type = string
 }
 
-# variable "sg_ids" {
-#   type = list(string)
-# }
+variable "region" {
+  type = string
+}
 
 variable "subnet_ids" {
   type = list(string)
+}
+
+variable "instance_count" {
+  type = number
 }
 
 variable "instance_ids" {
@@ -15,9 +19,16 @@ variable "instance_ids" {
 }
 
 variable "forwarding_config" {
-  type = map
+  type = map(any)
+}
+variable "forwarding_config_ssl" {
+  type = map(any)
 }
 
 variable "vpc_id" {
+  type = string
+}
+
+variable "certificate_arn" {
   type = string
 }

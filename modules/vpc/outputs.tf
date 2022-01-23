@@ -4,5 +4,5 @@ output "vpc_id" {
 
 output "gw_id" {
   description = "The ID of internet gateway"
-  value = aws_internet_gateway.gw.id
+  value       = aws_internet_gateway.gw.id
 }

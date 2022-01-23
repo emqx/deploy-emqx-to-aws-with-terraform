@@ -45,15 +45,27 @@ resource "aws_instance" "ec2" {
   vpc_security_group_ids      = var.sg_ids
   key_name                    = aws_key_pair.key_pair.key_name
 
+  root_block_device {
+    iops        = 3000
+    throughput  = 125
+    volume_size = 50
+    volume_type = "gp3"
+  }
+}
+
+resource "null_resource" "ssh_connection" {
+  depends_on = [aws_instance.ec2]
+
   connection {
     type        = "ssh"
-    host        = self.public_ip
+    host        = aws_instance.ec2.public_ip
     user        = "ubuntu"
     private_key = tls_private_key.key.private_key_pem
   }
 
+  # create init script
   provisioner "file" {
-    content     = templatefile("${path.module}/scripts/init.sh", { local_ip = self.private_ip })
+    content     = templatefile("${path.module}/scripts/init.sh", { local_ip = aws_instance.ec2.private_ip, ee_lic = var.ee_lic })
     destination = "/tmp/init.sh"
   }
 
@@ -77,12 +89,5 @@ resource "aws_instance" "ec2" {
     inline = [
       "sudo /home/ubuntu/emqx/bin/emqx start"
     ]
-  }
-
-  root_block_device {
-    iops        = 3000
-    throughput  = 125
-    volume_size = 50
-    volume_type = "gp3"
   }
 }

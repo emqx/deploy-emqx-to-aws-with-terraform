@@ -1,64 +1,17 @@
 ## common
 
+region         = "us-east-1"
 emqx_namespace = "tf-emqx-single"
 
 ## vpc
 
-emqx_ingress_with_cidr_blocks = [
-  {
-    description = "ssh"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = "0.0.0.0/0"
-  },
-  {
-    description = "mqtt"
-    from_port   = 1883
-    to_port     = 1883
-    protocol    = "tcp"
-    cidr_blocks = "0.0.0.0/0"
-  },
-  {
-    description = "mqtts"
-    from_port   = 8883
-    to_port     = 8883
-    protocol    = "tcp"
-    cidr_blocks = "0.0.0.0/0"
-  },
-  {
-    description = "ws"
-    from_port   = 8083
-    to_port     = 8083
-    protocol    = "tcp"
-    cidr_blocks = "0.0.0.0/0"
-  },
-  {
-    description = "wss"
-    from_port   = 8084
-    to_port     = 8084
-    protocol    = "tcp"
-    cidr_blocks = "0.0.0.0/0"
-  },
-  {
-    description = "dashboard"
-    from_port   = 18083
-    to_port     = 18083
-    protocol    = "tcp"
-    cidr_blocks = "0.0.0.0/0"
-  }
-]
+base_cidr_block = "10.0.0.0/16"
+# Note: `value` will be `netnum` argument in cidrsubnet function
+# Refer to https://www.terraform.io/language/functions/cidrsubnet
+emqx_zone = { "us-east-1a" = 1 }
 
-egress_with_cidr_blocks = [
-  {
-    description = "all"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = "0.0.0.0/0"
-  }
-]
 
 ## ec2
+emqx_instance_type          = "t3.small"
 associate_public_ip_address = true
-emqx_package = "https://www.emqx.com/en/downloads/broker/4.3.8/emqx-ubuntu20.04-4.3.8-amd64.zip"
+emqx_package                = "https://www.emqx.com/en/downloads/broker/4.3.8/emqx-ubuntu20.04-4.3.8-amd64.zip"
