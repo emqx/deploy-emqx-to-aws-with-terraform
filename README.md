@@ -18,12 +18,33 @@ terraform apply -auto-approve
 ```
 
 
-## Deploy EMQ X cluster(only support 2 node)
+## Deploy EMQ X cluster
 ```bash
 cd services/emqx_cluster
 terraform init
 terraform plan
-terraform apply -auto-approve
+terraform apply -auto-approve -var="ee_lic=${ee_lic}" -var="certificate_arn=${certificate_arn}"
+```
+Note: You have to apply a emqx license if you deploy emqx enterprise and create a server certificate in AWS Certificate Manager.
+
+More variables please refer to [doc](docs/variables.md)
+
+After apply successfully, it will output:
+```bash
+Outputs:
+
+emqx_cluster_address = "${prefix}.elb.${region}.amazonaws.com"
+```
+
+If you want to associate address with domain name, you need to config CNAME.
+
+You can access different services with different ports
+```bash
+Dashboard: ${prefix}.elb.${region}.amazonaws.com:18083
+MQTT: ${prefix}.elb.${region}.amazonaws.com:1883
+MQTTS: ${prefix}.elb.${region}.amazonaws.com:8883
+WS: ${prefix}.elb.${region}.amazonaws.com:8083
+WSS: ${prefix}.elb.${region}.amazonaws.com:8084
 ```
 
 ## Destroy
@@ -31,16 +52,8 @@ terraform apply -auto-approve
 terraform destroy -auto-approve
 ```
 
-## Version
-- os
-> ubuntu 20.04
+## Emqx package
+> Due to ubuntu 20.04 of node installed, you need to use emqx package associate with corresponding os version.
 
-- emqx
-> emqx open source 4.3.8
 
-## Config variables(optional)
-- emqx_instance_type
-> default is 2C2G `t3.small`
 
-- region
-> default is `us-east-1`

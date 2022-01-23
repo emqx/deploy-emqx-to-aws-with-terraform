@@ -1,67 +1,143 @@
+
+
 ## common
 
 variable "region" {
-  description = "AWS region"
   type        = string
-  # default     = "ap-southeast-1"
-  default = "us-east-1"
+  default     = ""
+  description = "aws region"
 }
 
 variable "access_key" {
   description = "AWS access key"
   type        = string
-  default     = null
+  default     = ""
 }
 
 variable "secret_key" {
   description = "AWS secret key"
   type        = string
-  default     = null
+  default     = ""
 }
 
 variable "emqx_namespace" {
   description = "emqx namespace"
   type        = string
-  default     = "tf-emqx"
+  default     = ""
 }
 
 variable "elb_namespace" {
   description = "elb namespace"
   type        = string
-  default     = "tf-elb"
+  default     = ""
 }
 
 ## vpc
 
-variable "subnet_cidr_blocks" {
-  description = "subnets of vpc"
-  type        = list(string)
-  default = [
-    "172.31.101.0/24",
-    "172.31.102.0/24",
-    "172.31.103.0/24",
-    "172.31.104.0/24",
-    "172.31.105.0/24",
-    "172.31.106.0/24",
-    "172.31.107.0/24",
-    "172.31.108.0/24",
-    "172.31.109.0/24"
-    # "172.31.110.0/24",
-    # "172.31.111.0/24",
-    # "172.31.112.0/24"
-  ]
+variable "base_cidr_block" {
+  description = "base cidr block"
+  type        = string
+  default     = ""
 }
+
 
 variable "emqx_ingress_with_cidr_blocks" {
   description = "ingress of emqx with cidr blocks"
   type        = list(any)
-  default     = [null]
+  default = [
+    {
+      description = "ssh"
+      from_port   = 22
+      to_port     = 22
+      protocol    = "tcp"
+      cidr_blocks = "0.0.0.0/0"
+    },
+    {
+      description = "mqtt"
+      from_port   = 1883
+      to_port     = 1883
+      protocol    = "tcp"
+      cidr_blocks = "0.0.0.0/0"
+    },
+    {
+      description = "mqtts"
+      from_port   = 8883
+      to_port     = 8883
+      protocol    = "tcp"
+      cidr_blocks = "0.0.0.0/0"
+    },
+    {
+      description = "ws"
+      from_port   = 8083
+      to_port     = 8083
+      protocol    = "tcp"
+      cidr_blocks = "0.0.0.0/0"
+    },
+    {
+      description = "wss"
+      from_port   = 8084
+      to_port     = 8084
+      protocol    = "tcp"
+      cidr_blocks = "0.0.0.0/0"
+    },
+    {
+      description = "dashboard"
+      from_port   = 18083
+      to_port     = 18083
+      protocol    = "tcp"
+      cidr_blocks = "0.0.0.0/0"
+    },
+    {
+      description = "cluster ekka"
+      from_port   = 4370
+      to_port     = 4370
+      protocol    = "tcp"
+      cidr_blocks = "0.0.0.0/0"
+    },
+    {
+      description = "cluster rpc"
+      from_port   = 5370
+      to_port     = 5370
+      protocol    = "tcp"
+      cidr_blocks = "0.0.0.0/0"
+    }
+  ]
 }
 
 variable "egress_with_cidr_blocks" {
   description = "egress with cidr blocks"
   type        = list(any)
-  default     = [null]
+  default = [
+    {
+      description = "all"
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_blocks = "0.0.0.0/0"
+    }
+  ]
+}
+
+variable "emqx_zone" {
+  type = map(number)
+
+  description = "Map of AZ to a number that should be used for emqx subnets"
+
+  # Note: `value` will be `netnum` argument in cidrsubnet function
+  # Refer to https://www.terraform.io/language/functions/cidrsubnet
+
+  default = {}
+}
+
+variable "elb_zone" {
+  type = map(number)
+
+  description = "Map of AZ to a number that should be used for elb subnets"
+
+  # Note: `value` will be `netnum` argument in cidrsubnet function
+  # Refer to https://www.terraform.io/language/functions/cidrsubnet
+
+  default = {}
 }
 
 ## ec2
@@ -72,52 +148,74 @@ variable "associate_public_ip_address" {
   default     = true
 }
 
-variable "ami" {
-  description = "AMI to use for the instance"
-  // Get the ami from the output of the packer
-  type    = string
-  default = null
-}
-
 variable "emqx_package" {
   description = "emqx installation package"
   type        = string
-  default     = null
+  default     = ""
 }
 
-variable "emqx_lic" {
-  description = "the name of key"
+variable "ee_lic" {
+  description = "the content of the license"
   type        = string
-  default     = null
+  default     = ""
 }
 
 variable "emqx_instance_count" {
-  description = "Instance count of emqx"
+  description = "the count of the emqx instance"
   type        = number
-  default     = 2
+  default     = 3
 }
 
 variable "emqx_instance_type" {
-  description = "Instance type of emqx"
+  description = "the type of the emqx instance"
   type        = string
   default     = "t3.small"
 }
 
 ## nlb
+
+variable "certificate_arn" {
+  description = "the arn of the certificate"
+  type        = string
+  default     = ""
+}
+
 variable "forwarding_config" {
   description = "forwarding config of nlb"
-  type        = map
+  type        = map(any)
   default = {
-      1883        =   "TCP"
-      8883       =   "TCP"
-      8083       =   "TCP"
-      8084       =   "TCP"
-      18083       =   "TCP"
+    "1883" = {
+      dest_port   = 1883,
+      protocol    = "TCP"
+      description = "mqtt"
+    },
+    "8083" = {
+      dest_port   = 8083,
+      protocol    = "TCP"
+      description = "ws"
+    },
+    "18083" = {
+      dest_port   = 18083,
+      protocol    = "TCP"
+      description = "dashboard"
+    }
   }
 }
 
-variable "elb_ingress_with_cidr_blocks" {
-  description = "ingress of elb with cidr blocks"
-  type        = list(any)
-  default     = [null]
+variable "forwarding_config_ssl" {
+  description = "forwarding ssl config of nlb"
+  type        = map(any)
+
+  default = {
+    "8883" = {
+      dest_port   = 1883,
+      protocol    = "TLS"
+      description = "mqtts"
+    },
+    "8084" = {
+      dest_port   = 8083,
+      protocol    = "TLS"
+      description = "wss"
+    }
+  }
 }

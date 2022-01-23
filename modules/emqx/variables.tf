@@ -22,6 +22,6 @@ variable "emqx_package" {
   type = string
 }
 
-variable "emqx_lic" {
+variable "ee_lic" {
   type = string
 }

@@ -3,9 +3,9 @@ locals {
   egress_rules  = var.egress_with_cidr_blocks
 }
 
-resource "aws_security_group" "allow_tls" {
+resource "aws_security_group" "sg" {
   name        = "${var.namespace}-sg"
-  description = "Allow TLS inbound and outbound traffic"
+  description = "Allow inbound and outbound traffic"
   vpc_id      = var.vpc_id
 
   dynamic "ingress" {
@@ -33,16 +33,6 @@ resource "aws_security_group" "allow_tls" {
   }
 
   tags = {
-    Name = "allow_tls"
+    Name = "${var.namespace}-sg"
   }
 }
-
-# module "sg" {
-#   source = "terraform-aws-modules/security-group/aws"
-
-#   name        = "${var.namespace}-sg"
-#   vpc_id      = var.vpc_id
-
-#   ingress_with_cidr_blocks = var.ingress_with_cidr_blocks
-#   egress_with_cidr_blocks = var.egress_with_cidr_blocks
-# }

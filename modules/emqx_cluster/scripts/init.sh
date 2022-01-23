@@ -11,7 +11,7 @@ sudo apt-get -y install zip
 sudo sysctl -w fs.file-max=2097152
 sudo sysctl -w fs.nr_open=2097152
 echo 2097152 | sudo tee /proc/sys/fs/nr_open
-sudo ulimit -n 1048576
+sudo sh -c "ulimit -n 1048576"
 
 echo 'fs.file-max = 1048576' | sudo tee -a /etc/sysctl.conf
 echo 'DefaultLimitNOFILE=1048576' | sudo tee -a /etc/systemd/system.conf
@@ -71,5 +71,9 @@ sudo sed -i 's/listener.tcp.external.max_conn_rate = 1000/listener.tcp.external.
 sudo sed -i 's/sysmon.large_heap = 8MB/sysmon.large_heap = 64MB/g' $HOME/emqx/etc/sys_mon.conf
 sudo sed -i 's/node.name = emqx@127.0.0.1/node.name = emqx@${local_ip}/g' $HOME/emqx/etc/emqx.conf
 
-# start emqx
-# sudo $HOME/emqx/bin/emqx start
+# create license file
+if [ -n "${ee_lic}" ]; then
+sudo cat > $LIC<<EOF
+${ee_lic}
+EOF
+fi
