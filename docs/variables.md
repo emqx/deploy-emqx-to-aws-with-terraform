@@ -80,7 +80,7 @@ default = [
       protocol    = "tcp"
       cidr_blocks = "0.0.0.0/0"
     }
-]
+ ]
 ```
 
 egress_with_cidr_blocks:
@@ -111,7 +111,7 @@ forwarding_config:
       protocol    = "TCP"
       description = "ws"
     }
-  }
+}
 ```
 
 forwarding_config_ssl:
@@ -133,5 +133,5 @@ forwarding_config_ssl:
       protocol    = "TCP"
       description = "dashboard"
     }
-  }
+}
 ```
