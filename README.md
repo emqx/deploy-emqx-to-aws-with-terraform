@@ -1,3 +1,6 @@
+# terraform-emqx-emqx-aws
+> Deploy emqx and emqx-enterprise on aws
+
 
 ## Install terraform
 > Please refer to [terraform install doc](https://learn.hashicorp.com/tutorials/terraform/install-cli)
