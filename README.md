@@ -26,9 +26,9 @@ terraform apply -auto-approve
 cd services/emqx_cluster
 terraform init
 terraform plan
-terraform apply -auto-approve -var="ee_lic=${ee_lic}" -var="certificate_arn=${certificate_arn}"
+terraform apply -auto-approve -var="ee_lic=${ee_lic}" -var="region=${region}"
 ```
-Note: You have to apply a emqx license if you deploy emqx enterprise and create a server certificate in AWS Certificate Manager.
+Note: You have to apply a emqx license if you deploy emqx enterprise.
 
 More variables please refer to [doc](docs/variables.md)
 
