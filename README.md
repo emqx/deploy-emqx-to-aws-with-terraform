@@ -1,5 +1,10 @@
 # terraform-emqx-emqx-aws
-> Deploy emqx and emqx-enterprise on aws
+> Deploy emqx or emqx enterprise on aws
+
+
+## `Default configurations:`
+> EMQX: EMQX Enterprise 4.4.3
+AWS Region: us-east-1
 
 
 ## Install terraform
@@ -12,7 +17,7 @@ export AWS_ACCESS_KEY_ID="anaccesskey"
 export AWS_SECRET_ACCESS_KEY="asecretkey"
 ```
 
-## Deploy EMQ X single node
+## Deploy EMQX single node
 ```bash
 cd services/emqx
 terraform init
@@ -21,7 +26,7 @@ terraform apply -auto-approve
 ```
 
 
-## Deploy EMQ X cluster
+## Deploy EMQX cluster
 ```bash
 cd services/emqx_cluster
 terraform init
