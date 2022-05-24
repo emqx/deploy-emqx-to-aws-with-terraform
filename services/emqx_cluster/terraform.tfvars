@@ -16,6 +16,6 @@ elb_zone  = { "us-east-1a" = 2 }
 associate_public_ip_address = true
 emqx_instance_count         = 3
 emqx_instance_type          = "t3.small"
-emqx_package                = "https://www.emqx.com/en/downloads/enterprise/4.4.0/emqx-ee-4.4.0-otp24.1.5-3-ubuntu20.04-amd64.zip"
+emqx_package                = "https://www.emqx.com/en/downloads/enterprise/4.4.3/emqx-ee-4.4.3-otp24.1.5-3-ubuntu20.04-amd64.zip"
 
 

@@ -56,40 +56,40 @@ resource "aws_lb_target_group_attachment" "tga" {
 ######################################
 ## create slef-signed ssl certificate
 ######################################
-# resource "random_string" "app_keystore_password" {
-#   length  = 16
-#   special = false
-# }
+resource "random_string" "app_keystore_password" {
+  length  = 16
+  special = false
+}
 
-# resource "tls_private_key" "key" {
-#   algorithm = "RSA"
-# }
+resource "tls_private_key" "key" {
+  algorithm = "RSA"
+}
 
-# resource "tls_self_signed_cert" "public_cert" {
-#   key_algorithm         = "RSA"
-#   private_key_pem       = "${tls_private_key.key.private_key_pem}"
-#   validity_period_hours = 87600
+resource "tls_self_signed_cert" "public_cert" {
+  # key_algorithm         = "RSA"
+  private_key_pem       = "${tls_private_key.key.private_key_pem}"
+  validity_period_hours = 87600
 
-#   allowed_uses = [
-#     "key_encipherment",
-#     "digital_signature",
-#     "server_auth",
-#   ]
+  allowed_uses = [
+    "key_encipherment",
+    "digital_signature",
+    "server_auth",
+  ]
 
-#   dns_names = ["*.${var.region}.elb.amazonaws.com"]
+  dns_names = ["*.${var.region}.elb.amazonaws.com"]
 
-#   subject {
-#     common_name  = "*.${var.region}.elb.amazonaws.com"
-#     organization = "ORAG"
-#     province     = "STATE"
-#     country      = "COUNT"
-#   }
-# }
+  subject {
+    common_name  = "*.${var.region}.elb.amazonaws.com"
+    organization = "ORAG"
+    province     = "STATE"
+    country      = "COUNT"
+  }
+}
 
-# resource "aws_acm_certificate" "cert" {
-#   private_key      = "${tls_private_key.key.private_key_pem}"
-#   certificate_body = "${tls_self_signed_cert.public_cert.cert_pem}"
-# }
+resource "aws_acm_certificate" "cert" {
+  private_key      = "${tls_private_key.key.private_key_pem}"
+  certificate_body = "${tls_self_signed_cert.public_cert.cert_pem}"
+}
 
 
 resource "aws_lb_listener" "listener_ssl" {
@@ -97,7 +97,8 @@ resource "aws_lb_listener" "listener_ssl" {
   for_each          = var.forwarding_config_ssl
   port              = each.key
   protocol          = each.value.protocol
-  certificate_arn   = var.certificate_arn
+  # certificate_arn   = var.certificate_arn
+  certificate_arn   = aws_acm_certificate.cert.arn
   default_action {
     target_group_arn = aws_lb_target_group.tg_ssl[each.key].arn
     type             = "forward"
