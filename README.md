@@ -2,9 +2,9 @@
 > Deploy emqx or emqx enterprise on aws
 
 
-## `Default configurations:`
-> EMQX: EMQX Enterprise 4.4.3
-AWS Region: us-east-1
+## Default configurations
+> EMQX: EMQX Enterprise 4.4.3   
+> AWS Region: us-east-1
 
 
 ## Install terraform
