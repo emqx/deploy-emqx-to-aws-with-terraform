@@ -1,9 +1,11 @@
 # terraform-emqx-emqx-aws
 > Deploy emqx or emqx enterprise on aws
 
+*Note:* Not support EMQX 5.x currently
+
 
 ## Default configurations
-> EMQX: EMQX Enterprise 4.4.3   
+> EMQX: EMQX Enterprise 4.4.3
 > AWS Region: us-east-1
 
 

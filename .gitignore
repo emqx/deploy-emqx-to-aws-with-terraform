@@ -17,3 +17,6 @@ emqx.zip
 
 # pem
 *.pe
+
+# AWS CLI
+AWSCLIV2.pkg
