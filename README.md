@@ -76,11 +76,11 @@ If you want to associate address with domain name, you need to config CNAME.
 
 You can access different services with different ports:
 ```bash
-Dashboard: ${prefix}.elb.${region}.amazonaws.com:18083
-MQTT: ${prefix}.elb.${region}.amazonaws.com:1883
-MQTTS: ${prefix}.elb.${region}.amazonaws.com:8883
-WS: ${prefix}.elb.${region}.amazonaws.com:8083
-WSS: ${prefix}.elb.${region}.amazonaws.com:8084
+Dashboard: ${emqx_cluster_address}:18083
+MQTT: ${emqx_cluster_address}:1883
+MQTTS: ${emqx_cluster_address}:8883
+WS: ${emqx_cluster_address}:8083
+WSS: ${emqx_cluster_address}:8084
 ```
 
 ### Cleanup
