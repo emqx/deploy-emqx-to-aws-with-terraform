@@ -3,6 +3,7 @@ locals {
   emqx_anchor     = element(aws_instance.ec2[*].private_ip, 0)
   emqx_rest       = slice(aws_instance.ec2[*].public_ip, 1, var.instance_count)
   emqx_rest_count = var.instance_count - 1
+  key_file        = "${path.module}/tf-emqx-key.pem"
 }
 
 data "aws_ami" "ubuntu" {
@@ -25,15 +26,23 @@ data "aws_ami" "ubuntu" {
   }
 }
 
+resource "null_resource" "delete_file" {
+  depends_on = [aws_instance.ec2]
+  provisioner "local-exec" {
+    command = "rm -f ${local.key_file}"
+  }
+}
+
+
 // ssh certificate
 resource "tls_private_key" "key" {
   algorithm = "RSA"
 }
 
 resource "local_sensitive_file" "private_key" {
-  filename          = "${path.module}/tf-emqx-key.pem"
-  content = tls_private_key.key.private_key_pem
-  file_permission   = "0400"
+  filename        = local.key_file
+  content         = tls_private_key.key.private_key_pem
+  file_permission = "0400"
 }
 
 resource "aws_key_pair" "key_pair" {

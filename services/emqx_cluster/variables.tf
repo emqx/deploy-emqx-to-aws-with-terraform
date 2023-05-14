@@ -148,13 +148,7 @@ variable "associate_public_ip_address" {
   default     = true
 }
 
-variable "emqx_package" {
-  description = "emqx installation package"
-  type        = string
-  default     = ""
-}
-
-variable "ee_lic" {
+variable "emqx_lic" {
   description = "the content of the license"
   type        = string
   default     = ""
@@ -218,4 +212,34 @@ variable "forwarding_config_ssl" {
       description = "wss"
     }
   }
+}
+
+variable "emqx_cookie" {
+  description = "(Optional) The cookie of emqx"
+  type        = string
+  default     = "emqx_secret_cookie"
+}
+
+variable "emqx4_package" {
+  description = "(Required) The install package of emqx4"
+  type        = string
+  default     = ""
+}
+
+variable "emqx5_package" {
+  description = "(Required) The install package of emqx5"
+  type        = string
+  default     = ""
+}
+
+variable "emqx5_core_count" {
+  description = "(Required) The count of emqx core node"
+  type        = number
+  default     = 1
+}
+
+variable "is_emqx5" {
+  description = "(Optional) Is emqx5 or not"
+  type        = bool
+  default     = false
 }
