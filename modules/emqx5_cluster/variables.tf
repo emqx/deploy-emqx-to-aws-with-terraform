@@ -6,6 +6,14 @@ variable "sg_ids" {
   type = list(string)
 }
 
+variable "instance_count" {
+  type = number
+}
+
+variable "core_count" {
+  type = number
+}
+
 variable "subnet_ids" {
   type = list(string)
 }
@@ -23,5 +31,9 @@ variable "emqx_package" {
 }
 
 variable "ee_lic" {
+  type = string
+}
+
+variable "cookie" {
   type = string
 }
