@@ -1,4 +1,4 @@
-# Terraform EMQX on AWS
+# Deploy EMQX to AWS with Terraform
 
 This Terraform module is designed to deploy either EMQX or EMQX Enterprise on Amazon Web Services (AWS). EMQX is a scalable and open-source MQTT broker that connects IoT devices.
 
