@@ -29,13 +29,16 @@ export AWS_SECRET_ACCESS_KEY="asecretkey"
 
 ### Configuring EMQX4
 
-To deploy EMQX version 4.x, provide the package URL in the emqx4_package variable. Replace ${emqx4_package_url} with your actual URL.
+To deploy EMQX version 4.4.x, provide the package URL in the emqx4_package variable. Replace ${emqx4_package_url} with your actual URL.
+
 te
 ```bash
 emqx4_package = ${emqx4_package_url}
 ```
 
 ### Configuring EMQX5
+
+To deploy EMQX version 5.0.x, provide the package URL in the emqx4_package variable. Replace ${emqx5_package_url} with your actual URL.
 
 ```bash
 emqx5_package = ${emqx5_package_url}
