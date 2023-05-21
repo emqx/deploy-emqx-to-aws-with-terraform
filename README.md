@@ -20,8 +20,8 @@ This module requires Terraform to be installed. If you haven't installed it alre
 In order to deploy EMQX on AWS, you need to provide your AWS access keys. You can do this by exporting the AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables:
 
 ``` bash
-export AWS_ACCESS_KEY_ID="anaccesskey"
-export AWS_SECRET_ACCESS_KEY="asecretkey"
+export AWS_ACCESS_KEY_ID=${access-key}
+export AWS_SECRET_ACCESS_KEY=${secret-key}
 ```
 
 
