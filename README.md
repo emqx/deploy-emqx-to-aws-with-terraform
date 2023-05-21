@@ -13,7 +13,7 @@ This Terraform module is designed to deploy either EMQX or EMQX Enterprise on Am
 
 ### Terraform 
 
-This module requires Terraform to be installed. If you haven't installed it already, you can follow the [official Terraform installation guide](https://developer.hashicorp.com/terraform/tutorials/gcp-get-started/install-cli)
+This module requires Terraform to be installed. If you haven't installed it already, you can follow the [official Terraform installation guide](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
 
 ### AWS Access Keys
 
