@@ -1,3 +1,43 @@
+locals {
+  package_url = var.is_emqx5 ? var.emqx5_package : var.emqx4_package
+
+}
+#######################################
+# check package
+#######################################
+
+resource "null_resource" "check_url" {
+  triggers = {
+    package = local.package_url
+  }
+
+  # Execute a local script
+  provisioner "local-exec" {
+    command = <<EOT
+      #!/bin/bash
+      set -e
+
+      # Define the URL to check
+      url="${local.package_url}"
+
+      # Check if the URL ends with tar.gz or zip
+      if [[ "$url" =~ ubuntu20.04-amd64\.(zip|tar\.gz)$ ]]; then
+        echo "URL suffix is valid (ubuntu20.04-amd64.tar.gz or ubuntu20.04-amd64.zip)."
+
+        # Attempt to download the package
+        if curl -fsS --head "$url" > /dev/null; then
+          echo "Package can be downloaded."
+        else
+          echo "Package download failed."
+          exit 1
+        fi
+      else
+        echo "Invalid URL suffix. URL should end with ubuntu20.04-amd64.tar.gz or ubuntu20.04-amd64.zip."
+        exit 1
+      fi
+    EOT
+  }
+}
 
 #######################################
 ## vpc modules
@@ -8,6 +48,7 @@ module "vpc" {
 
   emqx_namespace  = var.emqx_namespace
   base_cidr_block = var.base_cidr_block
+  depends_on = [null_resource.check_url]
 }
 
 #######################################
@@ -22,6 +63,7 @@ module "emqx_subnet" {
   cidr_block = var.base_cidr_block
   gateway_id = module.vpc.gw_id
   zone       = var.emqx_zone
+  depends_on = [null_resource.check_url]
 }
 
 module "elb_subnet" {
@@ -32,6 +74,7 @@ module "elb_subnet" {
   cidr_block = var.base_cidr_block
   gateway_id = module.vpc.gw_id
   zone       = var.elb_zone
+  depends_on = [null_resource.check_url]
 }
 
 #######################################
@@ -45,6 +88,7 @@ module "emqx_security_group" {
   vpc_id                   = module.vpc.vpc_id
   ingress_with_cidr_blocks = var.emqx_ingress_with_cidr_blocks
   egress_with_cidr_blocks  = var.egress_with_cidr_blocks
+  depends_on = [null_resource.check_url]
 }
 
 #######################################
@@ -64,6 +108,7 @@ module "emqx4_cluster" {
   sg_ids                      = [module.emqx_security_group.sg_id]
   emqx_package                = var.emqx4_package
   ee_lic                      = var.emqx_lic
+  depends_on = [null_resource.check_url]
 }
 
 module "emqx5_cluster" {
@@ -81,6 +126,7 @@ module "emqx5_cluster" {
   emqx_package                = var.emqx5_package
   ee_lic                      = var.emqx_lic
   cookie                      = var.emqx_cookie
+  depends_on = [null_resource.check_url]
 }
 
 #######################################
@@ -99,4 +145,5 @@ module "elb" {
   forwarding_config_ssl = var.forwarding_config_ssl
   vpc_id                = module.vpc.vpc_id
   instance_ids          = var.is_emqx5 ? module.emqx5_cluster[0].ids : module.emqx4_cluster[0].ids
+  depends_on = [null_resource.check_url]
 }

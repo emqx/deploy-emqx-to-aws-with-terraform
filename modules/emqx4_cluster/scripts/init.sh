@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 LIC="/home/ubuntu/emqx/etc/emqx.lic"
 HOME="/home/ubuntu"
@@ -16,7 +16,7 @@ sudo sh -c "ulimit -n 1048576"
 echo 'fs.file-max = 1048576' | sudo tee -a /etc/sysctl.conf
 echo 'DefaultLimitNOFILE=1048576' | sudo tee -a /etc/systemd/system.conf
 
-sudo tee -a /etc/security/limits.conf << EOF
+sudo tee -a /etc/security/limits.conf <<EOF
 root      soft   nofile      1048576
 root      hard   nofile      1048576
 ubuntu    soft   nofile      1048576
@@ -73,7 +73,7 @@ sudo sed -i 's/node.name = emqx@127.0.0.1/node.name = emqx@${local_ip}/g' $HOME/
 
 # create license file
 if [ -n "${ee_lic}" ]; then
-sudo cat > $LIC<<EOF
+	sudo cat >$LIC <<EOF
 ${ee_lic}
 EOF
 fi
