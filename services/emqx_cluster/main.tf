@@ -13,29 +13,7 @@ resource "null_resource" "check_url" {
 
   # Execute a local script
   provisioner "local-exec" {
-    command = <<EOT
-      #!/bin/bash
-      set -e
-
-      # Define the URL to check
-      url="${local.package_url}"
-
-      # Check if the URL ends with tar.gz or zip
-      if [[ "$url" =~ ubuntu20.04-amd64\.(zip|tar\.gz)$ ]]; then
-        echo "URL suffix is valid (ubuntu20.04-amd64.tar.gz or ubuntu20.04-amd64.zip)."
-
-        # Attempt to download the package
-        if curl -fsS --head "$url" > /dev/null; then
-          echo "Package can be downloaded."
-        else
-          echo "Package download failed."
-          exit 1
-        fi
-      else
-        echo "Invalid URL suffix. URL should end with ubuntu20.04-amd64.tar.gz or ubuntu20.04-amd64.zip."
-        exit 1
-      fi
-    EOT
+    command = "./check_url.sh ${local.package_url}"
   }
 }
 
